@@ -1,0 +1,36 @@
+# Produção. O contêiner não confia em nada e não alcança nada:
+# sem root, disco só de leitura, sem capacidades, sem volume e sem porta publicada.
+# A rede é interna: o contêiner não tem saída para a internet nem rota para outros projetos.
+# Quem fala com a internet é o nginx do servidor, que alcança o contêiner pelo IP fixo abaixo.
+name: jogo-sus
+
+services:
+  web:
+    image: ghcr.io/jvitorcarvalho/jogo-sus:latest
+    restart: unless-stopped
+    read_only: true
+    tmpfs:
+      - /tmp:size=8m,mode=1777
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    pids_limit: 64
+    mem_limit: 64m
+    cpus: 0.25
+    networks:
+      isolada:
+        ipv4_address: 172.31.250.2
+    logging:
+      driver: json-file
+      options:
+        max-size: 5m
+        max-file: '2'
+
+networks:
+  isolada:
+    driver: bridge
+    internal: true
+    ipam:
+      config:
+        - subnet: 172.31.250.0/29

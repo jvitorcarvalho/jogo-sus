@@ -1,0 +1,14 @@
+[Unit]
+Description=Atualiza o contêiner do jogo-sus a partir da imagem publicada
+After=docker.service network-online.target
+Wants=network-online.target
+
+# Roda como root de propósito: quem fala com o Docker já tem poder de root no servidor,
+# e um usuário "sem privilégio" no grupo docker daria só a aparência de isolamento.
+# A proteção está em /opt/jogo-sus pertencer a root e não ser alterável pelo repositório.
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/jogo-sus
+ExecStart=/opt/jogo-sus/atualizar.sh
+NoNewPrivileges=true
+PrivateTmp=true

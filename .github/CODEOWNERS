@@ -1,0 +1,7 @@
+# Toda mudança precisa da revisão do mantenedor.
+* @jvitorcarvalho
+
+# Estes caminhos decidem o que roda no CI e no servidor: revisão com atenção redobrada.
+/.github/ @jvitorcarvalho
+/deploy/ @jvitorcarvalho
+/Dockerfile @jvitorcarvalho
