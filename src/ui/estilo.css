@@ -1,0 +1,141 @@
+:root {
+  --fundo: #0e1b22;
+  --painel: #15262f;
+  --painel-2: #1c323d;
+  --borda: #2a4552;
+  --texto: #e8f1f2;
+  --fraco: #9db3ba;
+  --verde: #2fbf8f;
+  --verde-escuro: #1d8f69;
+  --ambar: #f2b441;
+  --perigo: #ff6b6b;
+  --raio: 10px;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--fundo);
+  color: var(--texto);
+  font: 16px/1.5 system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+h1, h2, h3, p { margin: 0; }
+h1 { font-size: clamp(1.8rem, 5vw, 2.8rem); line-height: 1.1; letter-spacing: -0.02em; }
+h2 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--fraco); }
+h3 { font-size: 1rem; }
+a { color: var(--verde); }
+[hidden] { display: none !important; }
+.fraco { color: var(--fraco); }
+.pequeno { font-size: 0.85rem; }
+.centro { text-align: center; }
+.perigo { color: var(--perigo); }
+.etiqueta {
+  font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--verde); font-weight: 600;
+}
+
+button, select { font: inherit; color: inherit; }
+button { cursor: pointer; border-radius: 8px; border: 1px solid var(--borda); background: var(--painel-2); padding: 0.45rem 0.8rem; }
+button:focus-visible, select:focus-visible, .uf:focus-visible { outline: 2px solid var(--ambar); outline-offset: 2px; }
+button:disabled { cursor: not-allowed; opacity: 0.45; }
+button.principal { background: var(--verde-escuro); border-color: var(--verde); font-weight: 600; }
+button.principal:hover:not(:disabled) { background: var(--verde); color: #06231a; }
+button.grande { padding: 0.7rem 1.6rem; font-size: 1.05rem; }
+button.discreto { background: transparent; }
+select { width: 100%; padding: 0.5rem; border-radius: 8px; border: 1px solid var(--borda); background: var(--painel-2); }
+
+/* ---------- telas de menu ---------- */
+.tela { max-width: 980px; margin: 0 auto; padding: 2rem 16px 3rem; display: grid; gap: 1.25rem; }
+.capa { padding: 2rem 0 0.5rem; display: grid; gap: 0.6rem; }
+.lema { font-size: 1.15rem; color: var(--fraco); max-width: 46ch; }
+.grade { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+.cartao { background: var(--painel); border: 1px solid var(--borda); border-radius: var(--raio); padding: 0.9rem; display: grid; gap: 0.45rem; align-content: start; }
+.cartao.cenario { gap: 0.6rem; padding: 1.2rem; }
+.cartao.cenario h3 { font-size: 1.3rem; }
+.cartao.cenario button { justify-self: start; margin-top: 0.3rem; }
+.continuar, .aviso { background: var(--painel); border: 1px solid var(--ambar); border-radius: var(--raio); padding: 0.8rem 1rem; display: flex; gap: 1rem; align-items: center; justify-content: space-between; flex-wrap: wrap; }
+.painel { background: var(--painel); border: 1px solid var(--borda); border-radius: var(--raio); padding: 1rem; display: grid; gap: 0.7rem; align-content: start; }
+
+.placar { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); }
+.placar > div { background: var(--painel); border: 1px solid var(--borda); border-radius: var(--raio); padding: 1rem; display: grid; gap: 0.2rem; }
+.placar strong { font-size: 1.7rem; font-variant-numeric: tabular-nums; }
+.placar span { color: var(--fraco); font-size: 0.85rem; }
+.placar .destaque { grid-column: 1 / -1; border-color: var(--verde); }
+.placar .destaque strong { font-size: clamp(2.4rem, 9vw, 4rem); color: var(--verde); line-height: 1; }
+.fim.perdeu h1 { color: var(--ambar); }
+.fim.venceu h1 { color: var(--verde); }
+.ranking { margin: 0; padding-left: 1.3rem; font-variant-numeric: tabular-nums; }
+.sobre h2 { margin-top: 0.8rem; }
+.fontes { display: grid; gap: 0.6rem; padding-left: 1.2rem; margin: 0; }
+
+/* ---------- jogo ---------- */
+.jogo { display: grid; grid-template-rows: auto 1fr auto; min-height: 100vh; }
+.topo {
+  position: sticky; top: 0; z-index: 5;
+  display: flex; flex-wrap: wrap; gap: 0.5rem 1.4rem; align-items: center;
+  padding: 0.6rem 16px; background: var(--painel); border-bottom: 1px solid var(--borda);
+}
+.relogio { display: grid; gap: 0.3rem; }
+.vels { display: flex; gap: 0.3rem; }
+.vel { padding: 0.25rem 0.6rem; min-width: 2.8rem; }
+.vel[aria-pressed='true'] { background: var(--ambar); border-color: var(--ambar); color: #2b1d00; font-weight: 700; }
+.indicador { display: grid; min-width: 5.5rem; }
+.indicador span { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; }
+.indicador strong { font-size: 1.2rem; font-variant-numeric: tabular-nums; }
+.barra { height: 4px; background: var(--painel-2); border-radius: 2px; overflow: hidden; }
+.barra i { display: block; height: 100%; background: var(--verde); transition: width 0.3s; }
+.barra.perigo i { background: var(--perigo); }
+.topo > button { margin-left: auto; }
+
+.palco { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 1rem; padding: 1rem 16px; align-items: start; }
+.area-mapa { display: grid; gap: 0.5rem; justify-items: center; position: sticky; top: 5.5rem; }
+.mapa { width: 100%; max-height: calc(100vh - 16rem); min-height: 260px; }
+.uf { stroke: var(--fundo); stroke-width: 1.2; cursor: pointer; transition: fill 0.4s; outline: none; }
+.uf:hover { stroke: var(--texto); stroke-width: 1.8; }
+.uf.selecionada { stroke: #fff; stroke-width: 3; }
+.marca-lotado { fill: none; stroke: none; }
+.marca-lotado.ativa { fill: #fff; stroke: var(--fundo); stroke-width: 2; animation: pulso 1.4s ease-in-out infinite; }
+.marca-lotado.colapso { fill: var(--perigo); stroke: #fff; }
+@keyframes pulso { 50% { opacity: 0.35; } }
+@media (prefers-reduced-motion: reduce) {
+  .marca-lotado.ativa { animation: none; }
+  .uf, .barra i { transition: none; }
+}
+.legenda { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; font-size: 0.8rem; color: var(--fraco); justify-content: center; }
+.rampa { width: 90px; height: 10px; border-radius: 5px; background: linear-gradient(90deg, rgb(52,88,102), rgb(201,162,39), rgb(217,83,43), rgb(142,27,27)); }
+.ponto-legenda { width: 10px; height: 10px; border-radius: 50%; background: #fff; margin-left: 0.6rem; }
+.nevoa { font-size: 0.85rem; color: var(--ambar); text-align: center; }
+
+.lateral { display: grid; gap: 1rem; }
+.cartao header { display: flex; justify-content: space-between; align-items: baseline; gap: 0.5rem; }
+.pips { color: var(--verde); letter-spacing: 0.15em; white-space: nowrap; }
+.prox { font-size: 0.85rem; color: var(--ambar); }
+.dados { display: grid; grid-template-columns: auto 1fr; gap: 0.25rem 1rem; margin: 0; }
+.dados dt { color: var(--fraco); }
+.dados dd { margin: 0; text-align: right; font-variant-numeric: tabular-nums; }
+.uf-corpo { display: grid; gap: 0.7rem; }
+.acoes { display: grid; gap: 0.6rem; }
+.acao { display: grid; gap: 0.3rem; padding: 0.7rem; background: var(--painel-2); border-radius: 8px; }
+
+.rodape { padding: 0.8rem 16px 1.2rem; background: var(--painel); border-top: 1px solid var(--borda); display: grid; gap: 0.5rem; }
+.noticias { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.25rem; font-size: 0.92rem; }
+.noticias .alerta { color: #ffb3b3; }
+.noticias .bom { color: #a7e8cf; }
+.fato { font-size: 0.9rem; border-left: 3px solid var(--verde); padding-left: 0.7rem; }
+
+.modal { position: fixed; inset: 0; z-index: 20; background: rgba(4, 10, 13, 0.78); display: grid; place-items: center; padding: 16px; overflow: auto; }
+.caixa { background: var(--painel); border: 1px solid var(--borda); border-radius: 14px; padding: 1.4rem; max-width: 520px; width: 100%; display: grid; gap: 0.8rem; }
+.caixa h2 { font-size: 1.35rem; text-transform: none; letter-spacing: 0; color: var(--texto); }
+.caixa ul { margin: 0; padding-left: 1.2rem; display: grid; gap: 0.35rem; }
+.opcoes { display: grid; gap: 0.5rem; }
+.opcoes button { text-align: left; padding: 0.7rem 0.9rem; }
+
+@media (max-width: 860px) {
+  .palco { grid-template-columns: minmax(0, 1fr); }
+  .area-mapa { position: static; }
+  .mapa { max-height: 62vh; }
+  .topo { gap: 0.4rem 0.9rem; }
+  .indicador { min-width: 4.4rem; }
+  .indicador strong { font-size: 1rem; }
+}
