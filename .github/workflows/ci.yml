@@ -4,6 +4,7 @@ on:
   pull_request:
   push:
     branches: [main]
+  workflow_dispatch:
 
 # Padrão mínimo. PR de fork roda com este token só de leitura e sem acesso a segredo nenhum.
 # Nunca usar pull_request_target neste repositório.
