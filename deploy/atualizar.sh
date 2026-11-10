@@ -17,4 +17,4 @@ fi
 
 # Falha visível no journal se o jogo não responder depois da troca.
 sleep 3
-wget -q -O /dev/null http://172.31.250.2:8080/saude
+wget -q -O /dev/null http://10.250.250.2:8080/saude
