@@ -134,7 +134,11 @@ declara que o jogo é independente e não tem vínculo com o governo.
 
 ## 7. Arquitetura
 
-Vite + TypeScript, sem framework de interface. Saída estática (`dist/`), hospedável em
+> Atualização de 2026-11-10: a interface foi migrada para React 19 (`src/ui/*.tsx`). O motor,
+> os dados e o armazenamento não mudaram. A entrega passou a ser uma imagem Docker; ver
+> `SECURITY.md` e `deploy/`.
+
+Vite + TypeScript, sem framework de interface (versão inicial). Saída estática (`dist/`), hospedável em
 qualquer servidor de arquivos.
 
 ```

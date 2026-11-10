@@ -1,0 +1,12 @@
+{
+  "name": "Linha de Frente: SUS",
+  "short_name": "Linha de Frente",
+  "description": "Jogo de estratégia: comande a resposta do SUS a um surto no Brasil.",
+  "lang": "pt-BR",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0e1b22",
+  "theme_color": "#0e1b22",
+  "icons": [{ "src": "./icone.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }]
+}
