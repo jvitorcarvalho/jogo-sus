@@ -5,6 +5,8 @@
 [![Código: MIT](https://img.shields.io/badge/c%C3%B3digo-MIT-blue.svg)](LICENSE)
 [![Conteúdo: CC BY-SA 4.0](https://img.shields.io/badge/conte%C3%BAdo-CC%20BY--SA%204.0-lightgrey.svg)](LICENSE-CONTEUDO.md)
 
+**Jogar: <https://sus.evolutivanegociosdigitais.com.br>**
+
 Jogo de estratégia de navegador em que você comanda a resposta do SUS a um surto no Brasil.
 O orçamento não dá para tudo: cada frente que você deixa de financiar aparece no mapa.
 
@@ -75,12 +77,31 @@ npm run dev
 | `npm run e2e` | testes de ponta a ponta contra o build de produção |
 | `npm run dados` | baixa de novo população e malha do IBGE |
 | `docker build -t jogo-sus .` | monta a imagem de produção |
+| `sh scripts/ci.sh` | CI completo dentro do Docker, sobre o commit atual |
+| `sh scripts/ci.sh 12` | o mesmo sobre o PR 12, sem trazê-lo para a sua pasta |
+
+## CI que roda em qualquer lugar
+
+O CI são estágios do [`Dockerfile`](Dockerfile), não a configuração de um serviço:
+
+```bash
+docker build --target verificar .   # lint, tipos e testes unitários
+docker build --target e2e .         # Playwright, computador e celular
+docker build .                      # imagem de produção
+```
+
+Só o estágio que baixa dependências tem rede. Os que executam código do repositório rodam com
+`--network=none`, então dá para testar o PR de um desconhecido sem que o código dele fale com a
+internet ou com a sua rede. [`scripts/ci.sh`](scripts/ci.sh) roda tudo sobre um commit exato e
+grava o resultado no GitHub como o status `ci-local`. Os workflows em `.github/` rodam as mesmas
+verificações no GitHub Actions.
 
 ## Entrega e segurança
 
 O jogo publicado é um site estático dentro de um contêiner confinado. O repositório é aberto e
-mesmo assim não tem como alcançar o servidor: não há credencial de deploy no GitHub, e é o
-servidor que busca a imagem publicada. O desenho completo está em [SECURITY.md](SECURITY.md) e
+mesmo assim não tem como alcançar o servidor: não há credencial de deploy no GitHub. O mantenedor
+publica da própria máquina com [`scripts/publicar.sh`](scripts/publicar.sh), que só envia o commit
+da `main` depois de o CI passar sobre ele. O desenho completo está em [SECURITY.md](SECURITY.md) e
 os arquivos em [`deploy/`](deploy).
 
 ## Contribuir
