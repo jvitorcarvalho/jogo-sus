@@ -32,10 +32,30 @@ test('reforçar uma frente gasta orçamento e sobe o nível', async ({ page }) =
   await page.getByRole('button', { name: 'Pausar' }).click();
   const orcamento = page.locator('.indicador', { hasText: 'Orçamento' }).locator('strong');
   await expect(orcamento).toHaveText('100');
-  await page.getByRole('button', { name: 'Reforçar · 40' }).first().click();
+  await page.getByRole('button', { name: 'Reforçar Atenção Básica por 40' }).click();
   await expect(orcamento).toHaveText('60');
-  await expect(page.getByLabel('Nível 1 de 3')).toHaveCount(1);
+  await expect(page.getByLabel('Atenção Básica: nível 1 de 3')).toHaveCount(1);
   await expect(page.locator('.noticias')).toContainText('Atenção Básica reforçada');
+});
+
+test('as frentes aparecem agrupadas pelas seis ações da Lei do SUS', async ({ page }) => {
+  await comecar(page, 'Dengue');
+  await page.getByRole('button', { name: 'Pausar' }).click();
+  const titulos = page.locator('.campo-titulo');
+  await expect(titulos).toHaveText([
+    'a) Vigilância sanitária',
+    'b) Vigilância epidemiológica',
+    'c) Saúde do trabalhador',
+    'd) Assistência terapêutica e farmacêutica',
+    'e) Saúde bucal',
+    'f) Inovação e produção em saúde',
+    'Apoio',
+  ]);
+  await expect(page.locator('.cartao[data-frente]')).toHaveCount(8);
+  await expect(page.locator('.indicador', { hasText: 'Rotina' }).locator('strong')).toHaveText('100%');
+  await page.getByLabel('Escolher estado').selectOption({ label: 'São Paulo' });
+  await expect(page.locator('.dados')).toContainText('Equipes de saúde');
+  await expect(page.locator('.dados')).toContainText('Têm plano de saúde');
 });
 
 test('escolher um estado mostra os dados e permite agir nele', async ({ page }) => {

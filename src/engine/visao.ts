@@ -14,17 +14,20 @@ export interface Totais {
   ativos: number;
   ativosVisiveis: number;
   obitos: number;
+  /** Só na simulação sem SUS: óbitos entre quem tem plano. */
+  obitosPlano: number;
   vacinados: number;
   ufsSobrecarga: number;
 }
 
 export function totais(estado: Estado): Totais {
-  const t: Totais = { ativos: 0, ativosVisiveis: 0, obitos: 0, vacinados: 0, ufsSobrecarga: 0 };
+  const t: Totais = { ativos: 0, ativosVisiveis: 0, obitos: 0, obitosPlano: 0, vacinados: 0, ufsSobrecarga: 0 };
   for (const s of SIGLAS) {
     const u = estado.ufs[s];
     t.ativos += u.i;
     t.ativosVisiveis += casosVisiveis(estado, s);
     t.obitos += u.obitos;
+    t.obitosPlano += u.obitosPlano;
     t.vacinados += u.v;
     if (u.sobrecarga > 0) t.ufsSobrecarga += 1;
   }

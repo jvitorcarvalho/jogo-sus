@@ -12,7 +12,8 @@
     "tipos": "tsc --noEmit",
     "e2e": "playwright test",
     "verificar": "npm run lint && npm run tipos && npm test && npm run build",
-    "dados": "node scripts/gerar-dados-ibge.mjs"
+    "dados": "node scripts/gerar-dados-ibge.mjs",
+    "dados:ans": "node scripts/gerar-dados-ans.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

@@ -10,8 +10,14 @@
 Jogo de estratégia de navegador em que você comanda a resposta do SUS a um surto no Brasil.
 O orçamento não dá para tudo: cada frente que você deixa de financiar aparece no mapa.
 
-Três cenários: dengue, sarampo e uma pandemia respiratória. No fim da partida, o jogo roda o
-mesmo surto num país sem sistema público e mostra a diferença.
+Três cenários: dengue, sarampo e uma pandemia respiratória. As frentes seguem as seis ações que
+o artigo 6º da Lei nº 8.080 põe no campo de atuação do SUS: vigilância sanitária, vigilância
+epidemiológica, saúde do trabalhador, assistência terapêutica e farmacêutica, saúde bucal e
+inovação e produção em saúde.
+
+No fim da partida, o jogo roda o mesmo surto num país só com a rede particular, com leitos para
+a parcela da população que tem plano em cada estado (dado da ANS), e mostra a diferença,
+inclusive para quem tem plano.
 
 > É uma simulação didática. As doenças e os números do jogo foram ajustados para a partida ser
 > boa de jogar; não são previsões nem dados reais. O projeto é independente e não tem vínculo
@@ -21,6 +27,8 @@ mesmo surto num país sem sistema público e mostra a diferença.
 
 - População de cada estado: Censo 2022 do IBGE. Mapa: malha geográfica do IBGE. Os dois são
   baixados por `npm run dados`.
+- Pessoas com plano de assistência médica em cada estado: dados abertos da ANS, baixados por
+  `npm run dados:ans`.
 - Os textos "Na vida real" que aparecem durante a partida. Cada um tem URL de fonte oficial e
   data de consulta em [`src/data/fatos.ts`](src/data/fatos.ts), e um teste reprova fato sem fonte.
 

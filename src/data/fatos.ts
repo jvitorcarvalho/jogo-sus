@@ -85,5 +85,49 @@ export const FATOS: Fato[] = [
   },
 ];
 
+/** Fatos conferidos em 2026-11-11, quando o jogo passou a seguir as ações do art. 6º da Lei do SUS. */
+FATOS.push(
+  {
+    texto:
+      'A Lei do SUS põe no campo de atuação do sistema seis tipos de ação: vigilância sanitária, vigilância epidemiológica, saúde do trabalhador, assistência terapêutica e farmacêutica, saúde bucal e inovação e produção em saúde. As frentes deste jogo seguem essa lista.',
+    frente: 'sanitaria',
+    url: 'https://www.planalto.gov.br/ccivil_03/leis/l8080.htm',
+    fonte: 'Lei nº 8.080/1990, art. 6º, inciso I',
+    consultadoEm: '2026-11-11',
+  },
+  {
+    texto:
+      'Saúde bucal entrou na lista de ações do SUS em 2023, e inovação e produção em saúde em 2026. A lei de 1990 continua sendo atualizada.',
+    frente: 'trabalhador',
+    url: 'https://www.planalto.gov.br/ccivil_03/leis/l8080.htm',
+    fonte: 'Lei nº 8.080/1990, art. 6º, alíneas "e" e "f"',
+    consultadoEm: '2026-11-11',
+  },
+  {
+    texto:
+      'A rede particular não é rival do SUS na lei: ela pode participar do sistema em caráter complementar, e o SUS pode recorrer a serviços privados quando os seus não bastam para atender uma região.',
+    frente: 'urgencia',
+    url: 'https://www.planalto.gov.br/ccivil_03/leis/l8080.htm',
+    fonte: 'Lei nº 8.080/1990, art. 4º, § 2º, e art. 24',
+    consultadoEm: '2026-11-11',
+  },
+  {
+    texto:
+      'Quem tem plano de saúde também é atendido pelo SUS. Quando isso acontece com um serviço que o contrato cobria, a lei manda a operadora do plano ressarcir o SUS.',
+    frente: 'atencao',
+    url: 'https://www.planalto.gov.br/ccivil_03/leis/l9656.htm',
+    fonte: 'Lei nº 9.656/1998, art. 32',
+    consultadoEm: '2026-11-11',
+  },
+  {
+    texto:
+      'Em 2026, cerca de 53 milhões de pessoas tinham plano de assistência médica no Brasil, segundo a ANS. O país tem mais de 200 milhões de habitantes: a maior parte depende só do SUS para ser atendida.',
+    frente: 'urgencia',
+    url: 'https://dadosabertos.ans.gov.br/FTP/PDA/taxa_de_cobertura_de_planos_de_saude-047/',
+    fonte: 'ANS, Taxa de cobertura de planos de saúde (dados abertos), e IBGE, Censo 2022',
+    consultadoEm: '2026-11-11',
+  },
+);
+
 /** Domínios aceitos como fonte. */
 export const DOMINIOS_PERMITIDOS = ['gov.br', 'ibge.gov.br', 'fiocruz.br', 'paho.org', 'who.int'];

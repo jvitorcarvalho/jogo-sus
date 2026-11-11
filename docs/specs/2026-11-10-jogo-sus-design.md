@@ -132,6 +132,18 @@ O jogo não usa a marca do SUS, do Ministério da Saúde nem de nenhum órgão. 
 Butantan, SAMU e PNI pelo nome, como fato, é permitido; usar logotipo não é. A tela "Sobre"
 declara que o jogo é independente e não tem vínculo com o governo.
 
+## 6-A. Atualização de 2026-11-11: ações da lei e rede particular
+
+- As frentes passam a seguir o art. 6º, inciso I, da Lei nº 8.080 (seis alíneas). Frentes novas:
+  Vigilância Sanitária (barreira aérea, evita falta de insumo) e Saúde do Trabalhador (desgaste
+  das equipes reduz leitos). Saúde bucal entra pelo indicador de serviços de rotina, que cai com
+  hospitais lotados e equipes em falta e pesa na confiança. Comunicação fica como apoio.
+- O contrafactual deixa de ser "25% dos leitos" e passa a ser "só rede particular": leitos
+  proporcionais à cobertura real de planos por estado (ANS), só para quem tem plano; sem
+  vigilância, vacinação pública ou prevenção. A tela final separa óbitos com e sem plano.
+- A rede particular aparece como complementar, nunca como vilã. Toda frase sobre ela na tela
+  descreve a hipótese da simulação, não a realidade.
+
 ## 7. Arquitetura
 
 > Atualização de 2026-11-10: a interface foi migrada para React 19 (`src/ui/*.tsx`). O motor,

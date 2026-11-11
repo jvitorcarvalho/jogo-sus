@@ -212,12 +212,27 @@ describe('ações do jogador', () => {
 });
 
 describe('frentes do SUS', () => {
-  const parado = Object.fromEntries(CENARIO_IDS.map((c) => [c, totais(jogar(c, SEMENTE, [], 1)).obitos]));
+  // Compara no mesmo dia: partidas que acabam em dias diferentes não são comparáveis pelo total final.
+  const DIA = 190;
+  // Sem eventos: o sorteio deles depende das frentes compradas e esconderia o efeito que se quer medir.
+  const obitosNoDia = (c: (typeof CENARIO_IDS)[number], ordem: typeof FRENTE_IDS): number => {
+    let e = semEventos(criarPartida(c, SEMENTE));
+    const fila = [...ordem];
+    while (e.dia < DIA && !e.fim) {
+      while (fila.length && e.orcamento >= CUSTO_NIVEL[e.niveis[fila[0]]]) {
+        e = aplicarAcao(e, { tipo: 'investir', frente: fila.shift()! }).estado;
+      }
+      e = avancarDia(e);
+    }
+    expect(e.dia, `${c} tem de chegar ao dia ${DIA}`).toBe(DIA);
+    return totais(e).obitos;
+  };
+  const parado = Object.fromEntries(CENARIO_IDS.map((c) => [c, obitosNoDia(c, [])]));
 
   it.each(FRENTE_IDS)('investir só em %s nunca piora e melhora ao menos um cenário', (f) => {
     let melhorou = false;
     for (const c of CENARIO_IDS) {
-      const obitos = totais(jogar(c, SEMENTE, [f, f, f], 1)).obitos;
+      const obitos = obitosNoDia(c, [f, f, f]);
       expect(obitos, `${f} em ${c}`).toBeLessThanOrEqual(parado[c]);
       if (obitos < parado[c] * 0.95) melhorou = true;
     }

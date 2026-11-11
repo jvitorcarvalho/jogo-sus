@@ -45,9 +45,9 @@ export function avancar(e: Estado, dias: number): Estado {
 }
 
 export const ESTRATEGIA: Record<CenarioId, FrenteId[]> = {
-  dengue: ['atencao', 'vigilancia', 'urgencia', 'comunicacao', 'imunizacao', 'ciencia'],
-  sarampo: ['imunizacao', 'comunicacao', 'vigilancia', 'atencao', 'urgencia', 'ciencia'],
-  respiratoria: ['ciencia', 'atencao', 'urgencia', 'comunicacao', 'vigilancia', 'imunizacao'],
+  dengue: ['atencao', 'vigilancia', 'urgencia', 'trabalhador', 'comunicacao', 'imunizacao', 'ciencia', 'sanitaria'],
+  sarampo: ['imunizacao', 'comunicacao', 'vigilancia', 'atencao', 'trabalhador', 'urgencia', 'sanitaria', 'ciencia'],
+  respiratoria: ['ciencia', 'atencao', 'sanitaria', 'urgencia', 'trabalhador', 'comunicacao', 'vigilancia', 'imunizacao'],
 };
 
 export const tresVezes = (ordem: FrenteId[]): FrenteId[] => [...ordem, ...ordem, ...ordem];

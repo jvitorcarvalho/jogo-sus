@@ -108,6 +108,14 @@ select { width: 100%; padding: 0.5rem; border-radius: 8px; border: 1px solid var
 .nevoa { font-size: 0.85rem; color: var(--ambar); text-align: center; }
 
 .lateral { display: grid; gap: 1rem; }
+.campo { display: grid; gap: 0.5rem; }
+.campo-titulo { font-size: 0.85rem; color: var(--verde); border-top: 1px solid var(--borda); padding-top: 0.7rem; }
+h4 { margin: 0; font-size: 1rem; }
+.rolagem { overflow-x: auto; }
+.campos { width: 100%; border-collapse: collapse; font-size: 0.9rem; min-width: 520px; }
+.campos th, .campos td { text-align: left; vertical-align: top; padding: 0.5rem 0.6rem; border-top: 1px solid var(--borda); }
+.campos thead th { color: var(--fraco); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; border-top: 0; }
+.campos tbody th { font-weight: 600; white-space: nowrap; }
 .cartao header { display: flex; justify-content: space-between; align-items: baseline; gap: 0.5rem; }
 .pips { color: var(--verde); letter-spacing: 0.15em; white-space: nowrap; }
 .prox { font-size: 0.85rem; color: var(--ambar); }

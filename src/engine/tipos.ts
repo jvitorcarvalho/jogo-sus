@@ -1,4 +1,12 @@
-export type FrenteId = 'atencao' | 'vigilancia' | 'imunizacao' | 'urgencia' | 'ciencia' | 'comunicacao';
+export type FrenteId =
+  | 'sanitaria'
+  | 'vigilancia'
+  | 'imunizacao'
+  | 'trabalhador'
+  | 'atencao'
+  | 'urgencia'
+  | 'ciencia'
+  | 'comunicacao';
 export type CenarioId = 'dengue' | 'sarampo' | 'respiratoria';
 export type AcaoLocalId = 'forca' | 'campanha' | 'mutirao' | 'leitos';
 export type Fim = null | 'vitoria' | 'derrota-confianca' | 'derrota-colapso' | 'derrota-tempo';
@@ -46,6 +54,10 @@ export interface EstadoUF {
   r: number;
   v: number;
   obitos: number;
+  /** Só na simulação sem SUS: óbitos entre quem tem plano de saúde. */
+  obitosPlano: number;
+  /** Fração das equipes de saúde em condição de trabalhar, de 0,4 a 1. */
+  equipe: number;
   /** Infectados dos últimos dias, do mais antigo ao mais recente. */
   hist: number[];
   /** Fração da demanda hospitalar sem leito, de 0 a 1. */
@@ -80,6 +92,8 @@ export interface Estado {
   dia: number;
   orcamento: number;
   confianca: number;
+  /** Serviços de rotina funcionando (pré-natal, doenças crônicas, saúde bucal), de 0 a 100. */
+  rotina: number;
   niveis: Record<FrenteId, Nivel>;
   gasto: Record<FrenteId, number>;
   ufs: Record<string, EstadoUF>;

@@ -9,8 +9,13 @@ import { useJogo } from './useJogo';
 
 function resultadoDe(estado: Estado): Resultado {
   const obitos = totais(estado).obitos;
-  const obitosSemSUS = simularSemSUS(estado.cenario, estado.semente, estado.dia).obitos;
-  return { obitos, obitosSemSUS, nota: nota(Math.max(0, obitosSemSUS - obitos), obitosSemSUS) };
+  const sem = simularSemSUS(estado.cenario, estado.semente, estado.dia);
+  return {
+    obitos,
+    obitosSemSUS: sem.obitos,
+    obitosPlano: sem.obitosPlano,
+    nota: nota(Math.max(0, sem.obitos - obitos), sem.obitos),
+  };
 }
 
 export function App() {
