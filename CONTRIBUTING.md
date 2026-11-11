@@ -53,6 +53,8 @@ npx vitest run --mode calibrar tests/calibragem.test.ts
 
 - Um assunto por PR, com descrição do que mudou e de como você conferiu.
 - O CI tem de ficar verde: lint, tipos, testes, build, testes de ponta a ponta e imagem Docker.
+  Ele roda dentro do Docker (`sh scripts/ci.sh`), e o mantenedor o executa sobre o seu PR e marca
+  o resultado como o status `ci-local`. Se tiver Docker, rode antes de abrir o PR.
 - Mudança em `.github/`, `deploy/` ou `Dockerfile` passa por revisão mais lenta, porque decide o
   que roda no CI e no servidor.
 
