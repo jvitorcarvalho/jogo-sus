@@ -1,7 +1,9 @@
 import { CENARIOS, CENARIO_IDS } from '../data/cenarios';
 import { FATOS, type Fato } from '../data/fatos';
-import { FRENTES, FRENTE_IDS, SEM_SUS } from '../data/frentes';
+import { ANS_CONSULTADO_EM, ANS_PERIODO } from '../data/ans.gerado';
+import { CAMPOS, FRENTES, FRENTE_IDS } from '../data/frentes';
 import { CONSULTADO_EM } from '../data/ibge.gerado';
+import { COBERTURA_BRASIL } from '../data/ufs';
 import type { CenarioId, Estado, Fim } from '../engine/tipos';
 import type { Nota } from '../engine/visao';
 import { lerRanking, type EntradaRanking } from '../storage/local';
@@ -82,6 +84,8 @@ const TITULO_FIM: Record<Exclude<Fim, null>, [string, string]> = {
 export interface Resultado {
   obitos: number;
   obitosSemSUS: number;
+  /** Parte dos óbitos sem SUS que ocorreu entre quem tem plano. */
+  obitosPlano: number;
   nota: Nota;
 }
 
@@ -123,7 +127,7 @@ export function FimDePartida({ estado, resultado, ranking, denovo, menu }: Props
         </div>
         <div>
           <strong>{num(resultado.obitosSemSUS)}</strong>
-          <span>óbitos no mesmo surto, sem SUS</span>
+          <span>óbitos no mesmo surto, só com a rede particular</span>
         </div>
         <div>
           <strong>{resultado.nota}</strong>
@@ -131,9 +135,54 @@ export function FimDePartida({ estado, resultado, ranking, denovo, menu }: Props
         </div>
       </div>
       <p className="fraco pequeno">
-        A comparação roda o mesmo surto, pelo mesmo número de dias, num país sem sistema público: {pct(SEM_SUS.leitos)} dos leitos, sem vacinação e sem prevenção. É
-        uma simulação didática, não uma previsão.
+        A comparação roda o mesmo surto, pelo mesmo número de dias, num país só com a rede particular: leitos para os {pct(COBERTURA_BRASIL)} da população que têm
+        plano (dado da ANS, por estado), sem vigilância, sem vacinação pública e sem prevenção. É uma simulação didática, não uma previsão.
       </p>
+      <section className="painel">
+        <h2>Sem SUS, ter plano não bastaria</h2>
+        <div className="placar">
+          <div>
+            <strong data-testid="obitos-com-plano">{num(resultado.obitosPlano)}</strong>
+            <span>óbitos entre quem tem plano</span>
+          </div>
+          <div>
+            <strong>{num(resultado.obitosSemSUS - resultado.obitosPlano)}</strong>
+            <span>óbitos entre quem não tem</span>
+          </div>
+        </div>
+        <p className="pequeno">
+          Na simulação, sem vigilância nem vacinação o surto cresce solto, os hospitais particulares lotam e as equipes adoecem. Quem tem plano morre menos que quem
+          não tem, mas também morre: o vírus não pergunta quem tem plano.
+        </p>
+      </section>
+      <section className="painel">
+        <h2>O que a lei põe no campo de atuação do SUS</h2>
+        <div className="rolagem">
+          <table className="campos">
+            <thead>
+              <tr>
+                <th scope="col">Lei 8.080, art. 6º</th>
+                <th scope="col">Na sua partida</th>
+                <th scope="col">Na simulação só com a rede particular</th>
+              </tr>
+            </thead>
+            <tbody>
+              {CAMPOS.filter((c) => c.alinea).map((c) => (
+                <tr key={c.id}>
+                  <th scope="row">
+                    {c.alinea}) {c.nome}
+                  </th>
+                  <td>{c.noJogo}</td>
+                  <td>{c.semSUS}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p className="fraco pequeno">
+          A terceira coluna descreve o que esta simulação assume, não o que a rede particular faz na vida real. Na lei, ela participa do SUS em caráter complementar.
+        </p>
+      </section>
       <p>
         {maisUsadas.length
           ? `Onde você mais investiu: ${maisUsadas.map((f) => FRENTES[f].nome).join(' e ')}.`
@@ -184,11 +233,21 @@ export function Sobre({ voltar }: { voltar(): void }) {
         As doenças, os custos e os efeitos de cada frente foram ajustados para a partida ser boa de jogar. O jogo não é um modelo epidemiológico e os números de casos
         e óbitos não são previsões nem dados reais.
       </p>
-      <p>A comparação "sem SUS" assume um país com {pct(SEM_SUS.leitos)} dos leitos, sem vacinação pública e sem prevenção. É uma hipótese do jogo.</p>
+      <p>
+        A comparação "só rede particular" assume um país em que só existem os leitos privados, na proporção de quem tem plano em cada estado, sem vigilância, sem
+        vacinação pública e sem prevenção. É uma hipótese do jogo, não uma descrição da rede particular: na vida real ela atende junto com o SUS, e a lei a trata
+        como complementar.
+      </p>
+      <p>
+        As frentes seguem as ações que o artigo 6º da Lei nº 8.080 põe no campo de atuação do SUS. A Comunicação não está nessa lista; entra como apoio. Saúde
+        bucal não tem frente própria: faz parte do indicador de serviços de rotina.
+      </p>
       <h2>O que é real</h2>
       <p>
-        A população de cada estado vem do Censo 2022 do IBGE e o mapa vem da malha geográfica do IBGE (consulta em {CONSULTADO_EM}). Os textos "Na vida real" foram
-        conferidos nas páginas oficiais abaixo.
+        A população de cada estado vem do Censo 2022 do IBGE e o mapa vem da malha geográfica do IBGE (consulta em {CONSULTADO_EM}). O número de pessoas com plano
+        de assistência médica em cada estado vem dos dados abertos da ANS, período {ANS_PERIODO} (consulta em {ANS_CONSULTADO_EM}); a porcentagem é esse número
+        dividido pela população do Censo 2022, uma aproximação, porque os anos são diferentes. Os textos "Na vida real" foram conferidos nas páginas oficiais
+        abaixo.
       </p>
       <ul className="fontes">
         {FATOS.map((f) => (

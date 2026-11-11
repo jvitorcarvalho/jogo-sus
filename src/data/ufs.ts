@@ -1,3 +1,4 @@
+import { BENEFICIARIOS_PLANO_MEDICO } from './ans.gerado';
 import { IBGE } from './ibge.gerado';
 
 export interface UF {
@@ -7,6 +8,11 @@ export interface UF {
   vizinhos: string[];
   /** Peso da UF na malha aérea, de 0 a 1. Parâmetro de jogo, não dado oficial. */
   aereo: number;
+  /**
+   * Fração da população com plano de assistência médica: beneficiários da ANS divididos pela
+   * população do Censo 2022. Os anos são diferentes; é uma aproximação declarada na tela Sobre.
+   */
+  cobertura: number;
   d: string;
   cx: number;
   cy: number;
@@ -50,9 +56,12 @@ export const UFS: Record<string, UF> = Object.fromEntries(
     // Peso aéreo proporcional à população, com piso para capitais menores e reforço ao DF (conexões).
     const base = dado.pop / maiorPop;
     const aereo = Math.min(1, Math.max(0.05, sigla === 'DF' ? base + 0.4 : base));
-    return [sigla, { sigla, ...dado, vizinhos: VIZINHOS[sigla] ?? [], aereo }];
+    const cobertura = Math.min(0.95, (BENEFICIARIOS_PLANO_MEDICO[sigla] ?? 0) / dado.pop);
+    return [sigla, { sigla, ...dado, vizinhos: VIZINHOS[sigla] ?? [], aereo, cobertura }];
   }),
 );
 
 export const SIGLAS: string[] = Object.keys(UFS).sort();
 export const POP_BRASIL: number = SIGLAS.reduce((t, s) => t + UFS[s].pop, 0);
+/** Fração do país com plano de assistência médica. */
+export const COBERTURA_BRASIL: number = SIGLAS.reduce((t, s) => t + UFS[s].cobertura * UFS[s].pop, 0) / POP_BRASIL;

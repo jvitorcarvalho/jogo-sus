@@ -3,7 +3,7 @@ import { ACOES_LOCAIS, ACAO_LOCAL_IDS } from '../data/acoesLocais';
 import { CENARIOS } from '../data/cenarios';
 import { EVENTOS } from '../data/eventos';
 import { FATOS } from '../data/fatos';
-import { CUSTO_NIVEL, EFEITOS, FRENTES, FRENTE_IDS } from '../data/frentes';
+import { CAMPOS, CUSTO_NIVEL, EFEITOS, FRENTES, FRENTE_IDS } from '../data/frentes';
 import { SIGLAS, UFS } from '../data/ufs';
 import { impedimento } from '../engine/acoes';
 import { textoEvento } from '../engine/eventos';
@@ -64,6 +64,11 @@ export function Jogo({ estado, velocidade, definirVelocidade, agir, sair }: Prop
             <i style={{ width: `${estado.confianca}%` }} />
           </div>
         </Indicador>
+        <Indicador
+          rotulo="Rotina"
+          dica="Serviços de rotina funcionando: pré-natal, doenças crônicas, saúde bucal. Caem quando os hospitais lotam e as equipes faltam."
+          valor={`${Math.round(estado.rotina)}%`}
+        />
         <Indicador rotulo="Casos conhecidos" dica="Casos ativos que a Vigilância consegue enxergar." valor={curto(t.ativosVisiveis)} />
         <Indicador rotulo="Óbitos" dica="Mortes acumuladas no surto." valor={curto(t.obitos)} />
         {cen.vacina === 'pesquisa' && (
@@ -111,25 +116,42 @@ export function Jogo({ estado, velocidade, definirVelocidade, agir, sair }: Prop
 
           <section className="painel">
             <h2>Frentes do SUS</h2>
-            {FRENTE_IDS.map((id) => {
-              const f = FRENTES[id];
-              const nivel = estado.niveis[id];
-              const motivo = impedimento(estado, { tipo: 'investir', frente: id });
+            <p className="fraco pequeno">Agrupadas pelas ações que a Lei nº 8.080, art. 6º, põe no campo de atuação do SUS.</p>
+            {CAMPOS.map((campo) => {
+              const frentes = FRENTE_IDS.filter((id) => FRENTES[id].campo === campo.id);
               return (
-                <article className="cartao" key={id}>
-                  <header>
-                    <h3>{f.nome}</h3>
-                    <span className="pips" aria-label={`Nível ${nivel} de 3`}>
-                      {'●'.repeat(nivel) + '○'.repeat(3 - nivel)}
-                    </span>
-                  </header>
-                  <p className="fraco pequeno">{f.exemplos}</p>
-                  <p className="pequeno">{f.descricao}</p>
-                  <p className="prox">{nivel >= 3 ? 'Frente no nível máximo.' : `Próximo nível: ${f.niveis[nivel]}`}</p>
-                  <button type="button" className="principal" disabled={!!motivo} title={motivo ?? ''} onClick={() => agir({ tipo: 'investir', frente: id })}>
-                    {nivel >= 3 ? 'Nível máximo' : `Reforçar · ${CUSTO_NIVEL[nivel]}`}
-                  </button>
-                </article>
+                <div className="campo" key={campo.id}>
+                  <h3 className="campo-titulo">{campo.alinea ? `${campo.alinea}) ${campo.nome}` : campo.nome}</h3>
+                  {frentes.length === 0 && <p className="pequeno">{campo.noJogo}</p>}
+                  {frentes.map((id) => {
+                    const f = FRENTES[id];
+                    const nivel = estado.niveis[id];
+                    const motivo = impedimento(estado, { tipo: 'investir', frente: id });
+                    return (
+                      <article className="cartao" key={id} data-frente={id}>
+                        <header>
+                          <h4>{f.nome}</h4>
+                          <span className="pips" aria-label={`${f.nome}: nível ${nivel} de 3`}>
+                            {'●'.repeat(nivel) + '○'.repeat(3 - nivel)}
+                          </span>
+                        </header>
+                        <p className="fraco pequeno">{f.exemplos}</p>
+                        <p className="pequeno">{f.descricao}</p>
+                        <p className="prox">{nivel >= 3 ? 'Frente no nível máximo.' : `Próximo nível: ${f.niveis[nivel]}`}</p>
+                        <button
+                          type="button"
+                          className="principal"
+                          disabled={!!motivo}
+                          title={motivo ?? ''}
+                          aria-label={nivel >= 3 ? `${f.nome}: nível máximo` : `Reforçar ${f.nome} por ${CUSTO_NIVEL[nivel]}`}
+                          onClick={() => agir({ tipo: 'investir', frente: id })}
+                        >
+                          {nivel >= 3 ? 'Nível máximo' : `Reforçar · ${CUSTO_NIVEL[nivel]}`}
+                        </button>
+                      </article>
+                    );
+                  })}
+                </div>
               );
             })}
           </section>
@@ -220,8 +242,12 @@ function PainelUF({ estado, sigla, agir }: { estado: Estado; sigla: string; agir
         <dd>{num(u.obitos)}</dd>
         <dt>Hospitais</dt>
         <dd className={u.sobrecarga > 0 ? 'perigo' : undefined}>{hospitais}</dd>
+        <dt>Equipes de saúde</dt>
+        <dd className={u.equipe < 0.8 ? 'perigo' : undefined}>{pct(u.equipe)} em atividade</dd>
         <dt>Vacinados</dt>
         <dd>{vacinaDisponivel(estado) || u.v > 0 ? pct(u.v / pop) : 'Ainda não há vacina'}</dd>
+        <dt title="Dado real da ANS dividido pela população do Censo 2022">Têm plano de saúde</dt>
+        <dd>{pct(UFS[sigla].cobertura)}</dd>
       </dl>
       <h3>Ações neste estado</h3>
       <div className="acoes">

@@ -4,7 +4,7 @@ import type { CenarioId, Estado, Fim } from '../engine/tipos';
 import type { Nota } from '../engine/visao';
 
 /** Aumentar sempre que o formato de Estado mudar; salvamentos antigos são descartados. */
-export const VERSAO = 1;
+export const VERSAO = 2;
 const CHAVE_PARTIDA = 'jogo-sus:partida';
 const CHAVE_RANKING = 'jogo-sus:ranking';
 const MAX_RANKING = 10;

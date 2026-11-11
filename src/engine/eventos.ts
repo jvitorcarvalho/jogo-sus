@@ -14,7 +14,10 @@ const CHANCE_DIA = 0.06;
 export function talvezSortearEvento(e: Estado): void {
   if (e.eventoPendente || e.dia < PRIMEIRO_DIA || e.dia - e.ultimoEvento < INTERVALO_MIN) return;
   if (sortear(e) >= CHANCE_DIA) return;
-  const candidatos = CENARIOS[e.cenario].eventos.filter((id) => id !== e.ultimoEventoId);
+  const insumoEvitado = e.niveis.sanitaria >= EFEITOS.sanitariaNivelInsumo;
+  const candidatos = CENARIOS[e.cenario].eventos.filter(
+    (id) => id !== e.ultimoEventoId && !(id === 'insumo' && insumoEvitado),
+  );
   const id = candidatos[Math.floor(sortear(e) * candidatos.length)];
   const evento = EVENTOS[id];
   let ufs: string[] = [];
