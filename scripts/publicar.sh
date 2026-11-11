@@ -31,5 +31,5 @@ docker save "$IMAGEM:latest" | gzip | ssh "$DEPLOY_SSH" 'gunzip | docker load'
 echo "== trocando o contêiner"
 ssh "$DEPLOY_SSH" 'cd /opt/jogo-sus && sudo docker compose up -d --pull never && sleep 5 \
   && docker inspect -f "{{index .Config.Labels \"org.opencontainers.image.revision\"}} {{.State.Health.Status}}" jogo-sus-web-1 \
-  && docker image prune -f >/dev/null'
+  && docker image prune -f --filter "label=org.opencontainers.image.source=https://github.com/jvitorcarvalho/jogo-sus" >/dev/null'
 echo "Publicado: $sha"
