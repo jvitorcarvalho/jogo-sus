@@ -10,7 +10,7 @@
 # de terceiro é testado sem conseguir falar com a internet nem com a rede de quem o testa.
 
 # ---- deps: baixa dependências (único estágio com rede) ----
-FROM node:24-bookworm-slim AS deps
+FROM node:25-bookworm-slim AS deps
 WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci --ignore-scripts
