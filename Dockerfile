@@ -29,7 +29,7 @@ RUN --network=none npm run build
 
 # ---- e2e: Playwright contra o build de produção, em computador e celular ----
 # A versão da imagem tem de acompanhar a de @playwright/test no package.json.
-FROM mcr.microsoft.com/playwright:v1.65.0-noble AS e2e
+FROM mcr.microsoft.com/playwright:v1.65.1-noble AS e2e
 WORKDIR /app
 COPY --from=build /app /app
 ENV CI=1
